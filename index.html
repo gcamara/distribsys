@@ -2,19 +2,37 @@
 <html>
 <meta charset="utf-8">
 <head>
-	<title>Sistemas Distribuídos - Instance Control Panel</title>
+	<title>Distributed Systems - Instance Control Panel</title>
+	<link rel="stylesheet" type="text/css" href="css/main.css">
+	<script
+  src="https://code.jquery.com/jquery-3.3.1.min.js"
+  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+  crossorigin="anonymous"></script>
+  <script type="text/javascript" src="js/main.js"></script>
 </head>
 <body>
-	<script type="text/javascript">
-		function connect() {
-			var socket = new WebSocket("ws://127.0.0.1:8000")
-			socket.onopen = function(event) {
-				socket.send('FreeakN connected')
-				console.log('Socket Connected to 127.0.0.1:8000')
-			}
-		}	
-
-		connect()	
-	</script>
+	<div class="container">
+		<div class="navbar">
+			<div class="nav-content">
+				Server IP
+				<input type="text" id="ipServer" placeholder="127.0.0.1:8000" value="127.0.0.1:8000">
+				<button id="connect">connect</button>
+			</div>
+		</div>
+		<div class="menu">
+			<ul>
+				<li>Teste</li>
+				<li>Teste</li>
+			</ul>
+		</div>
+		<div class="content">
+			<div class="log">
+			</div>
+			<div class="commands">
+				<input type="text" id="command" placeholder="Say something!">
+				<button>send</button>
+			</div>
+		</div>
+	</div>
 </body>
 </html>

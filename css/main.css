@@ -1,0 +1,104 @@
+@import url("https://fonts.googleapis.com/css?family=Oswald");
+body {
+  font-family: 'Oswald', sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+.menu {
+  width: 80px;
+  background: #444;
+  color: white;
+  height: calc(100vh - 50px);
+  float: left;
+}
+.menu ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+.menu ul li {
+  width: 100%;
+  height: 50px;
+  text-align: center;
+  line-height: 50px;
+}
+.menu ul li:hover {
+  background: rgba(0, 0, 0, 0.5);
+  cursor: pointer;
+}
+
+.navbar {
+  width: 100%;
+  height: 50px;
+  background: #eee;
+  float: left;
+}
+.navbar .nav-content {
+  float: right;
+  margin-right: 10px;
+  padding: 10px;
+}
+
+.content {
+  width: calc(100% - 80px);
+  max-height: calc(100vh - 50px);
+  overflow-y: auto;
+}
+.content .log {
+  height: calc(100vh - 50px - 60px);
+  border: 1px #eee solid;
+  margin: 10px;
+  border-radius: 4px;
+}
+.content .log .warn {
+  color: orange;
+}
+.content .log .info {
+  color: blue;
+}
+.content .log .error {
+  color: red;
+}
+
+input[type="text"] {
+  border-radius: 4px;
+  border: 1px #ddd solid;
+  height: 25px;
+  margin-left: 10px;
+  text-align: right;
+  padding-right: 5px;
+  outline: none;
+}
+
+button {
+  border-radius: 4px;
+  padding: 6px;
+  background: #7fb87b;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-right: 2px rgba(0, 0, 0, 0.5) solid;
+  border-bottom: 2px rgba(0, 0, 0, 0.5) solid;
+  transition: border .2s ease-out;
+  outline: none;
+}
+button:hover {
+  border-bottom: 1px;
+  border-right: 1px;
+}
+
+.content .log, input[type="text"], button {
+  border-right: 2px rgba(0, 0, 0, 0.5) solid;
+  border-bottom: 2px rgba(0, 0, 0, 0.5) solid;
+}
+
+.commands #command {
+  width: 100%;
+  max-width: calc(100% - 70px);
+}
+.commands button {
+  width: 40px;
+}
+
+/*# sourceMappingURL=main.css.map */
