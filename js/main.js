@@ -4,7 +4,7 @@
 		var socket = new WebSocket("ws://"+address)
 		socket.onopen = function(event) {
 			socket.send('FreeakN connected')
-			log.info('Connecting to server ' + address)
+			log.info('Connected to server ' + address)
 		}
 	}	
 
@@ -22,9 +22,9 @@
 			var element = $('<div class="'+event+'">'+text+'</div>')
 			$('.log').append(element)
 		}
-		self.info = () => { self.text(text, 'info') }
-		self.warn = () => { self.text(text, 'warn') }
-		self.error = () => { self.text(text, 'error') }
+		self.info = (text) => { self.text(text, 'info') }
+		self.warn = (text) => { self.text(text, 'warn') }
+		self.error = (text) => { self.text(text, 'error') }
 
 		return self
 	}

@@ -58,6 +58,8 @@ body {
 		margin: 10px;
 		border-radius: 4px;
 		@extend %border-effect;
+		text-align: right;
+		padding-right: 10px;
 
 		.warn {
 			color: orange

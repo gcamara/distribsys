@@ -50,6 +50,8 @@ body {
   border: 1px #eee solid;
   margin: 10px;
   border-radius: 4px;
+  text-align: right;
+  padding-right: 10px;
 }
 .content .log .warn {
   color: orange;
