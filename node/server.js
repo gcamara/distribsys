@@ -11,33 +11,39 @@ server.listen(8000, () => {
 var wsServer = new webSocketServer({ httpServer: server })
 wsServer.on('request', (request) => {
 	var socket =  request.accept(null, request.origin)
-
 	configureSocket(socket)
 })
 
 function broadcastEvent(socket, event, msg) {
-	var defaultMsgs = []
-	defaultMsgs['join'] = ' entered the chat'
-	defaultMsgs['leave'] = ' left the chat'
+	console.log('Broadcasting event '+ event + (msg !== undefined ? " - "+msg : ''))
 
 	users.forEach(user => {
 		if (user === socket) return
-		
-		if (defaultMsgs.indexOf(event) === -1)
-			user.write(socket.name+': '+ msg)
-		else
-			user.write(socket.name + defaultMsgs[event])
+		var data = {name: socket.name, event: event, message: msg}
+		user.sendUTF(JSON.stringify(data))
 	})
 }
 
 function configureSocket(socket) {
 	socket.on('close', () => userDrop(socket))
-	socket.on('message', (data) => { 
-		if (data.name !== undefined)
-			socket.name = data.name
-		broadcastEvent(socket, 'message', data.event)
+	socket.on('message', (data) => {
+		var content = JSON.parse(data.utf8Data)
+		var event = 'message'
+		if (content.name !== undefined) {
+			socket.name = content.name
+			event = 'join'
+			users.push(socket)
+			sendConnections(socket)
+		}
+		broadcastEvent(socket, content.event, content.data)
 	})
-	socket.on('error', () => userDrop(socket))
+	socket.on('error', () => {
+		users.splice(users.indexOf(socket), 1)
+	})
+}
+
+function sendConnections(socket) {
+	socket.sendUTF(JSON.stringify({ event: 'userlist', data: users }))
 }
 
 function userDrop(socket) {
