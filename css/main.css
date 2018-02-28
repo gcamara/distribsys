@@ -60,8 +60,7 @@ body {
   overflow-y: auto;
 }
 .content .content-body {
-  height: calc(75vh - 0px - 60px);
-  margin: 10px;
+  height: calc(75vh - 0px - 30px);
 }
 .content .log {
   height: calc(30vh - 0px - 80px);
@@ -121,7 +120,7 @@ button:hover {
   border-right: 1px;
 }
 
-.content .content-body, .content .log, input[type="text"], button {
+.content .log, input[type="text"], button {
   border: 1px #eee solid;
   border-radius: 4px;
   border-right: 2px rgba(0, 0, 0, 0.5) solid;
@@ -152,6 +151,13 @@ button:hover {
 }
 .commands button {
   width: 40px;
+}
+
+.config .header {
+  padding: 10px;
+  width: calc(100% - 20px);
+  height: 20px;
+  background: #eee;
 }
 
 /*# sourceMappingURL=main.css.map */

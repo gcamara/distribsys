@@ -67,9 +67,7 @@ body {
 	overflow-y: auto;
 
 	.content-body {
-		height: calc(75vh - #{$navheight} - 60px);
-		@extend %border-effect;
-		margin: 10px;
+		height: calc(75vh - #{$navheight} - 30px);
 	}
 
 	.log {

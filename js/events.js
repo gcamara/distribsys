@@ -31,6 +31,13 @@
 			}, 100)
 		});
 
+		$('ul li').click(function(event) {
+			var self = $(this)
+			var link
+			if ((link = self.attr('src')) != undefined)
+				$('.content .content-body').load('content/'+link)
+		})
+
 		$(window).click(event => {
 			var target = $(event.target)
 			if (target[0] !== submenu[0]) {

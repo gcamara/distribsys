@@ -115,7 +115,6 @@
 		}
 
 		var d = new Date
-		console.log(d.getDate())
     	var dformat = [d.getDate().padLeft(),
     		   (d.getMonth()+1).padLeft(),
                d.getFullYear()].join('/') +' ' +
