@@ -1,7 +1,8 @@
 $menu-width: 200px;
-$navheight: 0px;
+$navheight: 40px;
 $cborders: rgba(0,0,0,.5);
-$menu-height: calc(100vh - #{$navheight});
+$menu-height: calc(100vh - #{$navheight} - 20px);
+$redcolor: #b62323;
 
 body {
 	font-family: 'Oswald', sans-serif;
@@ -11,7 +12,7 @@ body {
 
 .menu {
 	width: $menu-width;
-	background: #485e6e;
+	background: #414141;
 	color: white;
 	height: $menu-height;
 	float: left;
@@ -22,7 +23,7 @@ body {
 }
 
 .sub-menu {
-	top: $navheight;
+	top: calc(#{$navheight} + 20px);
 	z-index: -1;
 	left: 200px;
 	position: absolute;
@@ -49,15 +50,28 @@ body {
 }
 
 .nav-bar {
-	width: 100%;
+	width: calc(100% - 20px);
 	height: $navheight;
-	background: #eee;
+	line-height: $navheight;
+	color: white;
+	background: #2a2a2a;
+	padding: 10px;
+	text-align: right;
 	float: left;
 
 	.nav-content {
 		float: right;
 		margin-right: 10px;
 		padding: 10px;
+	}
+
+	label, button {
+		margin-left: 10px;
+	}
+	select {
+		@extend %border-effect;
+		height: 25px;
+		outline: none;
 	}
 }
 
@@ -67,7 +81,7 @@ body {
 	overflow-y: auto;
 
 	.content-body {
-		height: calc(75vh - #{$navheight} - 30px);
+		height: calc(75vh - 50px);
 	}
 
 	.log {
@@ -90,8 +104,11 @@ body {
 		}
 
 		.log-bar {
-			width: 100%;
-			background: #ddd;
+			width: calc(100% - 10px);
+			background: #b62323;
+			color: white;
+			line-height: 30px;
+			padding-left: 10px;
 			min-height: 30px;
 			border-top-left-radius: 4px;
 			border-top-right-radius: 4px;
@@ -99,6 +116,7 @@ body {
 		}
 
 		.log-content {
+			background: #eee;
 			padding: 10px;
 			overflow-y: auto;
 			height: calc(30vh - #{$navheight} - 130px);
@@ -111,8 +129,7 @@ input[type="text"] {
 	border: 1px #ddd solid;
 	height: 25px;
 	margin-left: 10px;
-	text-align: right;
-	padding-right: 5px;
+	padding-left: 5px;
 	@extend %border-effect;
 	outline: none;
 }
@@ -155,10 +172,15 @@ button {
 			padding-left: 10px;
 			height: 40px;
 			line-height: 40px;
+			transition: border-left .1s ease-in;
 
 			&:hover, &.selected {
 				background: rgba(0,0,0,.5);
 				cursor: pointer;
+			}
+
+			&.selected {
+				border-left: 5px $redcolor solid
 			}
 		}
 	}
@@ -175,4 +197,21 @@ button {
 	button {
 		width: 40px;
 	}
+}
+
+.header {
+	padding: 10px;
+	width: calc(100% - 20px);
+	height: 20px;
+	background: #b62323;
+	color: white;
+	line-height: 20px;
+	font-size: 16pt;
+}
+
+.sub-header {
+	width: calc(100% - 40px);
+	padding: 20px;
+    background: $redcolor;
+    color: white;
 }

@@ -11,6 +11,8 @@
 		log.info('New instance loaded... ')
 		log.warn('Please, go to ', { style: 'float: left; margin-right: 5px;'})
 		log.addLink('<i class="fa fa-cogs"></i> Setup')
+
+		$('.content-body').load('content/dashboard.html')
 	})
 
 	function configureFieldsEvents() {
@@ -54,7 +56,8 @@
 	}
 
 	function connect() {
-		var address = $('#ipServer').val()
+		//var address = $('#ipServer').val()
+		var address = '127.0.0.1:8000'
 		webSocket = new WebSocket("ws://"+address)
 		webSocket.onopen = function(event) {
 			joinServer()

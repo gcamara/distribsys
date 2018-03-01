@@ -22,9 +22,31 @@
   <script type="text/javascript" src="js/events.js"></script>
 </head>
 <body>
+	<div class="nav-bar">
+		<label>Instance Alias *</label>
+		<input type="text" id="instance-alias" placeholder="Ex: Protheus">
+		<label>Memory Available *</label>
+		<select id="memory">
+			<option value="4"> 4GB </option>
+			<option value="8"> 8GB </option>
+			<option value="12"> 12GB </option>
+			<option value="16"> 16GB </option>
+			<option value="32"> 32GB </option>
+			<option value="64"> 64GB </option>
+			<option value="128"> 128GB </option>
+		</select>
+		<label>Cores *</label>
+		<select id="memory">
+			<option value="1"> 1 </option>
+			<option value="2"> 2 </option>
+			<option value="4"> 4 </option>
+			<option value="8"> 8 </option>
+		</select>
+		<button id="connect">connect</button>
+	</div>
 	<div class="menu">
 		<ul>
-			<li class="selected" src="config.html"><i class="fa fa-cogs"></i> Setup </li>
+			<li class="selected" src="dashboard.html"><i class="fa fa-dashboard"></i> Dashboard </li>
 			<li>
 				<i class="fa fa-hdd-o"></i> Instances
 				<ul>
@@ -39,7 +61,11 @@
 		<div class="content-body">
 		</div>
 		<div class="log">
-			<div class="log-bar"></div>
+			<div class="log-bar">
+				<label>
+					<i class="fa fa-code"></i> Console
+				</label>
+			</div>
 			<div class="log-content"></div>
 		</div>
 		<div class="commands">

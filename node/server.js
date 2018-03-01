@@ -1,5 +1,6 @@
 var http = require('http')
 var webSocketServer = require('websocket').server
+var stringify = require('json-stringify')
 var users = []
 var serverNumber
 
@@ -20,7 +21,7 @@ function broadcastEvent(socket, event, msg) {
 	users.forEach(user => {
 		if (user === socket) return
 		var data = {name: socket.name, event: event, message: msg}
-		user.sendUTF(JSON.stringify(data))
+		user.sendUTF(stringify(data))
 	})
 }
 
@@ -43,7 +44,7 @@ function configureSocket(socket) {
 }
 
 function sendConnections(socket) {
-	socket.sendUTF(JSON.stringify({ event: 'userlist', data: users }))
+	socket.sendUTF(stringify({ event: 'userlist', data: users }))
 }
 
 function userDrop(socket) {

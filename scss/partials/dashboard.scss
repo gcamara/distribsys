@@ -1,0 +1,21 @@
+.dashboard {
+	.instances {
+		margin: 10px;
+		$height: calc(75vh - #{$navheight} - 80px);
+		min-height: $height;
+		max-height: $height;
+		overflow-y: auto;
+		width: calc(100% - 20px);
+		margin: auto;
+		text-align: center;
+
+		.instance {
+			@extend %border-effect;
+			width: calc(25% - 30px);
+			height: 200px;
+			margin: 10px;
+			display: inline-block;
+
+		}
+	}
+}
