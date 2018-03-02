@@ -22,34 +22,36 @@
   <script type="text/javascript" src="js/events.js"></script>
 </head>
 <body>
-	<div class="nav-bar">
-		<label>Instance Alias *</label>
-		<input type="text" id="instance-alias" placeholder="Ex: Protheus">
-		<label>Memory Available *</label>
-		<select id="memory">
-			<option value="4"> 4GB </option>
-			<option value="8"> 8GB </option>
-			<option value="12"> 12GB </option>
-			<option value="16"> 16GB </option>
-			<option value="32"> 32GB </option>
-			<option value="64"> 64GB </option>
-			<option value="128"> 128GB </option>
-		</select>
-		<label>Cores *</label>
-		<select id="memory">
-			<option value="1"> 1 </option>
-			<option value="2"> 2 </option>
-			<option value="4"> 4 </option>
-			<option value="8"> 8 </option>
-		</select>
-		<button id="connect">connect</button>
-	</div>
+	<form action="#">
+		<div class="nav-bar">
+			<label>Instance Alias *</label>
+			<input type="text" required="true" id="instance-alias" placeholder="Ex: Protheus">
+			<label>Memory Available *</label>
+			<select id="memory">
+				<option value="4"> 4GB </option>
+				<option value="8"> 8GB </option>
+				<option value="12"> 12GB </option>
+				<option value="16"> 16GB </option>
+				<option value="32"> 32GB </option>
+				<option value="64"> 64GB </option>
+				<option value="128"> 128GB </option>
+			</select>
+			<label>Cores *</label>
+			<select id="memory">
+				<option value="1"> 1 </option>
+				<option value="2"> 2 </option>
+				<option value="4"> 4 </option>
+				<option value="8"> 8 </option>
+			</select>
+			<input type="submit" value="connect" id="connect">
+		</div>
+	</form>
 	<div class="menu">
 		<ul>
 			<li class="selected" src="dashboard.html"><i class="fa fa-dashboard"></i> Dashboard </li>
 			<li>
 				<i class="fa fa-hdd-o"></i> Instances
-				<ul>
+				<ul id="sub-menus">
 					<li><i class="fa fa-desktop"></i> Proteus </li>
 					<li><i class="fa fa-desktop"></i> Baco </li>
 				</ul>

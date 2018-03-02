@@ -4,13 +4,13 @@ var stringify = require('json-stringify')
 var users = []
 var serverNumber
 
-var server = http.createServer(()=>{})
-server.listen(8000, () => {
+var server = http.createServer(function(){})
+server.listen(8000, function() {
 	console.log('Server listening on port 8000')
 })
 
 var wsServer = new webSocketServer({ httpServer: server })
-wsServer.on('request', (request) => {
+wsServer.on('request', function(request) {
 	var socket =  request.accept(null, request.origin)
 	configureSocket(socket)
 })
@@ -18,7 +18,7 @@ wsServer.on('request', (request) => {
 function broadcastEvent(socket, event, msg) {
 	console.log('Broadcasting event '+ event + (msg !== undefined ? " - "+msg : ''))
 
-	users.forEach(user => {
+	users.forEach(function(user) {
 		if (user === socket) return
 		var data = {name: socket.name, event: event, message: msg}
 		user.sendUTF(stringify(data))
@@ -26,8 +26,8 @@ function broadcastEvent(socket, event, msg) {
 }
 
 function configureSocket(socket) {
-	socket.on('close', () => userDrop(socket))
-	socket.on('message', (data) => {
+	socket.on('close', function() { userDrop(socket) })
+	socket.on('message', function(data) {
 		var content = JSON.parse(data.utf8Data)
 		var event = 'message'
 		if (content.name !== undefined) {
@@ -38,7 +38,7 @@ function configureSocket(socket) {
 		}
 		broadcastEvent(socket, content.event, content.data)
 	})
-	socket.on('error', () => {
+	socket.on('error', function() {
 		users.splice(users.indexOf(socket), 1)
 	})
 }

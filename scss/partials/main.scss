@@ -73,6 +73,10 @@ body {
 		height: 25px;
 		outline: none;
 	}
+
+	input[type="text"]:disabled, select:disabled {
+		background: #eee;
+	}
 }
 
 .content {

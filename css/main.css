@@ -64,6 +64,9 @@ body {
   height: 25px;
   outline: none;
 }
+.nav-bar input[type="text"]:disabled, .nav-bar select:disabled {
+  background: #eee;
+}
 
 .content {
   width: calc(100% - 200px);

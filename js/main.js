@@ -3,6 +3,7 @@
 	var webSocket
 	var nickname = 'FreeakN'
 	var defaultMsgs = []
+	var users = []
 	defaultMsgs['join'] = 'entered the chat'
 	defaultMsgs['leave'] = 'left the chat'
 
@@ -73,7 +74,16 @@
 			var event = data.event
 			var message = data.message
 
-			if (!message) {
+			if ('userlist' === event) {
+				users = data.data
+				var userNames = users.map(u => u.name)
+				log.message('User list '+ userNames.join(', '))
+				var instances = $('#sub-menus')
+				users.forEach(u => {
+					instances.find('ul').append($('<li><i class="fa fa-desktop"></i> '+u.remoteAddress+'</li>'))
+				})
+			}
+			else if (!message) {
 				message = name + ' ' + defaultMsgs[event]
 				if (event === 'leave')
 					log.warn(message)
@@ -91,6 +101,11 @@
 				log.error('Check whether the server is up or not.')
 			}
 		}
+
+		$('.nav-bar input, .nav-bar select').each(function() {
+			var self = $(this)
+			self.attr('disabled', true)
+		})
 	}
 
 	function joinServer() {
