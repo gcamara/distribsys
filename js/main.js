@@ -1,4 +1,5 @@
-;(() => {
+;(function() {
+	window.sys = this
 	window.log = new Log()
 	var webSocket
 	var nickname = 'FreeakN'
@@ -69,7 +70,6 @@
 		}
 		webSocket.onmessage = function(event) {
 			var data = JSON.parse(event.data)
-			console.log(data)
 			var name = data.name
 			var event = data.event
 			var message = data.message
@@ -80,7 +80,8 @@
 				log.message('User list '+ userNames.join(', '))
 				var instances = $('#sub-menus')
 				users.forEach(u => {
-					instances.find('ul').append($('<li><i class="fa fa-desktop"></i> '+u.remoteAddress+'</li>'))
+					instances.append($('<li><i class="fa fa-desktop"></i> '+u.name+' ('+u.remoteAddress+')</li>'))
+					sys.loadSubMenus()
 				})
 			}
 			else if (!message) {
