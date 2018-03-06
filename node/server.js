@@ -8,6 +8,11 @@ var serverNumber
 var net = require('net')
 var client = net.Socket()
 var me = 'FreeakN'
+
+if (process.argv.indexOf('-port') == -1) {
+	console.error('Parameter -port is mandatory.')
+	process.exit(1)
+}
 var myPort = process.argv[process.argv.indexOf('-port') + 1]
 var rl = readline.createInterface({
 	input: process.stdin,
