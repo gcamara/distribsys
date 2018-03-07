@@ -1,15 +1,43 @@
 var net = require('net')
 var client = net.Socket()
-var me = 'FreeakN'
+var servers
+var serverPort
 
-client.connect(5009, '172.19.7.60', function() {
-	console.log('Connected')
-	var data = { event: 'join', name: me, time: new Date()}
-	client.write(JSON.stringify(data))
-})
+module.exports = function(serversConfig, serverPortConfig) {
+	var module = {}
+	
+	servers = serversConfig
+	serverPort = serverPortConfig
 
-client.on('data', function(data) {
-	console.log('Received: '+data+' \n')
-})
+	module.connectToServer = connectToServer
 
-client.on('close', () => console.log('Connection ended'))
+	return module
+}
+
+/* Client Side */
+function connectToServer(ip, port) {
+	var ports = servers.map(m => m.remotePort)
+
+	if (ports.indexOf(port) === -1) {
+		client.connect(port, ip, function() {
+			console.log('Connected as client on ' + client.remoteAddress+':'+client.remotePort)
+			var data = { event: 'join', ip: 'localhost', port: serverPort, time: new Date()}
+			client.setKeepAlive(true)
+			client.write(JSON.stringify(data))
+			servers.push(client)	
+		})
+
+		client.on('data', function(data) {
+			console.log('Client Received: '+data+' \n')
+		})
+
+		client.on('close', (err) => { 
+			console.log('Client connection ended') 
+		})
+
+		client.on('error', (err) => { 
+			console.log('There has been and error')
+			console.log(err) 
+		})
+	}
+}

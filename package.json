@@ -1,0 +1,23 @@
+{
+  "name": "distribsys",
+  "version": "1.0.0",
+  "description": "Trabalho de SD",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "electron ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/gcamara/distribSys.git"
+  },
+  "author": "Gabriel Câmara Carvalho",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/gcamara/distribSys/issues"
+  },
+  "homepage": "https://github.com/gcamara/distribSys#readme",
+  "devDependencies": {
+    "electron": "^1.8.3"
+  }
+}
