@@ -1,0 +1,227 @@
+.nav-bar {
+  width: 100%;
+  min-height: 40px;
+  background: #2e2e2e;
+  color: white;
+  text-align: right;
+  margin-bottom: 5px;
+}
+.nav-bar ul {
+  list-style-type: none;
+}
+.nav-bar ul li {
+  display: inline-block;
+  padding: 10px;
+  font-weight: 100;
+}
+
+.port-container {
+  position: absolute;
+  margin: auto;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  padding: 20px;
+  background-color: white;
+  border: 1px #eee solid;
+  box-shadow: 0px 20px 40px -10px #444;
+  border-radius: 10px;
+  width: 200px;
+  min-height: 200px;
+  display: flex;
+}
+.port-container .port-center {
+  width: calc(80% + 10px);
+  margin: 0 auto;
+}
+.port-container .port-center label {
+  font-size: 10pt;
+  text-align: center;
+  width: 100%;
+  display: block;
+  margin-bottom: 10px;
+}
+.port-container input {
+  border: 1px #ccc solid;
+  padding: 5px;
+  border-radius: 4px;
+  outline: none;
+}
+.port-container button {
+  border: 1px #ccc solid;
+  padding: 10px;
+  border-radius: 4px;
+  outline: none;
+  width: 100%;
+  margin-top: 9px;
+}
+.port-container button:hover {
+  background: #ccc;
+  color: white;
+  cursor: pointer;
+}
+
+.logo {
+  text-align: center;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+.logo span {
+  text-shadow: 0px 5px 9px;
+  font-family: Verdana;
+  box-shadow: 0 0 5px -5px;
+}
+.logo span:first-child {
+  font-size: 40pt;
+  line-height: 50pt;
+}
+.logo span:last-child {
+  font-size: 50pt;
+  margin-left: -30px;
+  color: #405454;
+  line-height: 0;
+}
+.logo.white span {
+  text-shadow: none;
+}
+.logo.white span:first-child {
+  color: white;
+}
+.logo.white span:last-child {
+  color: #626060;
+}
+
+.notification-container {
+  overflow-x: hidden;
+  width: 100%;
+  top: 10px;
+  position: absolute;
+  height: 60px;
+}
+.notification-container .notification {
+  padding: 10px;
+  font-size: 8pt;
+  font-weight: 100;
+  border-width: 1px;
+  position: absolute;
+  top: 0px;
+  color: white;
+  display: table;
+  min-width: 150px;
+  border-radius: 4px;
+}
+.notification-container .notification.show {
+  animation: show-notification .3s ease-in forwards;
+}
+.notification-container .notification.show:after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  height: 5px;
+  width: 0;
+  left: 0;
+  border-bottom-left-radius: 4px;
+  background: rgba(255, 255, 255, 0.5);
+  animation: notification-progress 1.5s ease-in forwards;
+}
+.notification-container .notification.error {
+  background: rgba(240, 70, 70, 0.8);
+}
+.notification-container .notification.info {
+  background: rgba(70, 152, 210, 0.8);
+}
+.notification-container .notification span {
+  padding-left: 5px;
+  vertical-align: middle;
+  display: table-cell;
+  min-width: 120px;
+}
+@keyframes show-notification {
+  from {
+    right: -200px;
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+    right: 10px;
+  }
+}
+@keyframes notification-progress {
+  99% {
+    border-bottom-right-radius: 0;
+  }
+  to {
+    width: 100%;
+    border-bottom-right-radius: 4px;
+  }
+}
+.menu {
+  width: 300px;
+  background: #161616;
+  color: white;
+  box-shadow: -4px 0px 8px 7px #444;
+  height: 100vh;
+  position: fixed;
+}
+.menu .perfil {
+  display: flex;
+  background: black;
+  padding: 10px;
+  min-height: 40px;
+  margin-top: 10px;
+  position: relative;
+}
+.menu .perfil .logo {
+  text-align: left !important;
+  display: inline-block;
+}
+.menu .perfil .infos {
+  display: inline-block;
+  border-left: 1px white solid;
+  line-height: 19pt;
+  padding-left: 10px;
+  font-size: 8pt;
+  margin-left: 10px;
+}
+.menu ul {
+  list-style-type: none;
+  background: black;
+  font-size: 10pt;
+  padding-left: 0px;
+}
+.menu ul li {
+  padding: 10px;
+}
+.menu ul li:hover {
+  background: #25808e;
+  cursor: pointer;
+}
+.menu ul li i {
+  font-size: 10pt !important;
+}
+.menu ul li:last-child {
+  position: absolute;
+  bottom: 0;
+  padding: 0;
+  width: 100%;
+}
+.menu ul li:last-child button {
+  border: none;
+  width: 100%;
+  cursor: pointer;
+  color: white;
+  background: black;
+  outline: none;
+  height: 40px;
+}
+.menu ul li:last-child button:hover {
+  background: #25808e;
+}
+
+body {
+  font-family: sans-serif;
+  margin: 0;
+  background: white;
+}
+
+/*# sourceMappingURL=main.css.map */

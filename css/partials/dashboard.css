@@ -1,0 +1,64 @@
+.menu {
+  width: 300px;
+  background: #161616;
+  color: white;
+  box-shadow: -4px 0px 8px 7px #444;
+  height: 100vh;
+  position: fixed;
+}
+.menu .perfil {
+  display: flex;
+  background: black;
+  padding: 10px;
+  min-height: 40px;
+  margin-top: 10px;
+  position: relative;
+}
+.menu .perfil .logo {
+  text-align: left !important;
+  display: inline-block;
+}
+.menu .perfil .infos {
+  display: inline-block;
+  border-left: 1px white solid;
+  line-height: 19pt;
+  padding-left: 10px;
+  font-size: 8pt;
+  margin-left: 10px;
+}
+.menu ul {
+  list-style-type: none;
+  background: black;
+  font-size: 10pt;
+  padding-left: 0px;
+}
+.menu ul li {
+  padding: 10px;
+}
+.menu ul li:hover {
+  background: #25808e;
+  cursor: pointer;
+}
+.menu ul li i {
+  font-size: 10pt !important;
+}
+.menu ul li:last-child {
+  position: absolute;
+  bottom: 0;
+  padding: 0;
+  width: 100%;
+}
+.menu ul li:last-child button {
+  border: none;
+  width: 100%;
+  cursor: pointer;
+  color: white;
+  background: black;
+  outline: none;
+  height: 40px;
+}
+.menu ul li:last-child button:hover {
+  background: #25808e;
+}
+
+/*# sourceMappingURL=dashboard.css.map */

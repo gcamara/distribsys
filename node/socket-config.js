@@ -23,10 +23,15 @@ function _getServer() { return server }
 function _broadcastEvent(socket, event, msg) {
 	console.log('Broadcasting event '+ event + (msg !== undefined ? " - "+msg : ''))
 
-	users.forEach(function(user) {
+	_getUsers().forEach(function(user) {
 		if (user === socket) return
 		var data = {name: socket.name, event: event, message: msg}
 		user.sendUTF(stringify(data))
+	})
+
+	_getServer().forEach(function(server) {
+		var data = {name: server.name, event: event, message: msg}
+		server.sendUTF(stringify(data))
 	})
 }
 

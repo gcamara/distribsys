@@ -1,22 +1,21 @@
 var net = require('net')
 var client = net.Socket()
-var servers
+var servers = []
 var serverPort
 
-module.exports = function(serversConfig, serverPortConfig) {
+module.exports = function(serverPortConfig) {
 	var module = {}
-	
-	servers = serversConfig
 	serverPort = serverPortConfig
 
-	module.connectToServer = connectToServer
+	module.connectToServer = _connectToServer
 
 	return module
 }
 
 /* Client Side */
-function connectToServer(ip, port) {
+function _connectToServer(ip, port) {
 	var ports = servers.map(m => m.remotePort)
+	console.log('Attempting to connect on '+ip+':'+port)
 
 	if (ports.indexOf(port) === -1) {
 		client.connect(port, ip, function() {
