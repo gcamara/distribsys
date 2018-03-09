@@ -47,6 +47,9 @@
   border-radius: 4px;
   outline: none;
 }
+.port-container input:first-of-type {
+  margin-bottom: 5px;
+}
 .port-container button {
   border: 1px #ccc solid;
   padding: 10px;
@@ -216,6 +219,11 @@
 }
 .menu ul li:last-child button:hover {
   background: #25808e;
+}
+
+.content {
+  display: inline-block;
+  margin-left: 300px;
 }
 
 body {

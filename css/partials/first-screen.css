@@ -30,6 +30,9 @@
   border-radius: 4px;
   outline: none;
 }
+.port-container input:first-of-type {
+  margin-bottom: 5px;
+}
 .port-container button {
   border: 1px #ccc solid;
   padding: 10px;

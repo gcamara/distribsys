@@ -5,6 +5,7 @@
 	$(document).ready(function() {
 		$('#server-ip').text(server.address().address)
 		$('#server-port').text(server.address().port)
+		$('#server-alias').text(dsApp.instanceAlias)
 
 		$('#connectInstance').on('click', function() {
 			var self = $(this)

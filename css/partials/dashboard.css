@@ -61,4 +61,9 @@
   background: #25808e;
 }
 
+.content {
+  display: inline-block;
+  margin-left: 300px;
+}
+
 /*# sourceMappingURL=dashboard.css.map */

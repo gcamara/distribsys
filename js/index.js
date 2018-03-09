@@ -1,25 +1,34 @@
-var dsApp = {}
+var dsApp = {
+	http: require('http'),
+	stringify: require('./node/node_modules/json-stringify'),
+	socketModule: require('./node/socket-config')(),
+	clModule: require('./node/client'),
+	wsModule: require('./node/webserver'),
+	servers: [],
+	users: []
+}
 ;(function() {
 
 	//App Global Variables
-	dsApp.http = require('http')
-	dsApp.stringify = require('./node/node_modules/json-stringify')
-	dsApp.socketModule = require('./node/socket-config')()
-	dsApp.clModule = require('./node/client')
-	dsApp.wsModule = require('./node/webserver')
-	dsApp.serverNumber
 	dsApp.showError = showError
 	dsApp.showInfo = showInfo
 	dsApp.showWarn = showWarn
-	dsApp.client
+	dsApp.addInstance = _addInstance
 
 	btn = $('#teste')
 	port = $('#port')
+	instanceAlias = $('#alias')
 
 	btn.on('click', function() {
 	    dsApp.myPort = port.val()
+	    dsApp.instanceAlias = instanceAlias.val()
 	    if (!dsApp.myPort) {
 	    	showError('Port number can\'t be empty and must be a number.')
+	    	return
+	    }
+
+	    if (!dsApp.instanceAlias) { 
+	    	showError('You must inform an alias for this instance')
 	    	return
 	    }
 	    try {
@@ -39,8 +48,13 @@ var dsApp = {}
 	port.on('keypress', (event) => { if (event.keyCode === 13) btn.click() })
 
 	$(document).ready(() => {
-		port.focus()
+		instanceAlias.focus()
 	})
+
+	function _addInstance(alias, ip, port) {
+		var el = $('<div> ALIAS '+alias+' / IP '+ip+' / PORT: '+port+'</div>')
+		$('.content').append(el)
+	}
 
 	function addNotification(msg, type) {
 		var ic = type === 'error' ? 'report' : type;

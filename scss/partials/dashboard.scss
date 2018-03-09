@@ -1,5 +1,6 @@
+$menu-width: 300px;
 .menu {
-	width: 300px;
+	width: $menu-width;
 	background: #161616;
 	color: white;
 	box-shadow: -4px 0px 8px 7px #444;
@@ -67,4 +68,9 @@
 			}
 		}
 	}
+}
+
+.content {
+	display: inline-block;
+	margin-left: $menu-width;
 }
