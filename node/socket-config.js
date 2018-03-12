@@ -13,6 +13,7 @@ module.exports = function() {
 	module.getUsers = _getUsers
 	module.getServer = _getServer
 	module.getServers = _getServers
+	module.showServers = _showServers
 
 	return module
 }
@@ -20,9 +21,10 @@ module.exports = function() {
 function _getUsers() { return users }
 function _getServer() { return server }
 function _getServers() { return dsApp.servers }
+function _showServers() { dsApp.log.info(_getServers()) }
 
 function _broadcastMessage(socket, event, msg) {
-	console.log('Broadcasting event '+ event + (msg !== undefined ? " - "+msg : ''))
+	dsApp.log.info('Broadcasting event '+ event + (msg !== undefined ? " - "+msg : ''))
 
 	_getUsers().forEach(function(user) {
 		if (user.alias === socket.alias) return
@@ -50,23 +52,18 @@ function _broadcastEvent(socket, data) {
 }
 
 function _configureServer(socket) {
-	
 	socket.write(_getServerInfo())
 	
-	socket.on('close', function() { _userDrop(socket) })
-	socket.on('data', function(data) {
-		_processEvent(socket, JSON.parse(data))
-	})
-	socket.on('error', function() {
-		_userDrop(socket)
-	})
+	socket.on('data', function(data) { _processEvent(socket, JSON.parse(data))	})
+	socket.on('error', function() { _userDrop('Server', socket)	})
 }
 
 function _processEvent(socket, data) {
 	var event = data.event
-	if (event === 'join') {
+	if (event === 'clientinfo') {
 		//Check whether there's already a connection between the two instances
 		socket.alias = data.alias
+		dsApp.log.info('New instance connected '+ data.alias + ' ('+data.ip+':'+data.port+')')
 		//Means it will be a server instance, otherwise it'll be just a client connection
 		if (data.ip) {
 			//Auto Connect to the server
@@ -89,23 +86,19 @@ function _getServerInfo() {
 
 function _sendConnections(socket) {
 			
-	function filter() {
-		var self = this
-		var list = self.filter(element => { if (element.socket.alias != socket.alias) return Object.assign({}, element) })
-		return list
+	function map() {
+		return this.map(el => { 
+			if (el.socket.alias != socket.alias) 
+				return { alias: el.alias, ip: el.ip, port: el.port }
+		})
 	} 
 
-	function wipeSocket() { this.forEach(element => delete element.socket )	}
-	var servers = filter.call(_getServers())
-	var users = filter.call(_getUsers())
-
-	wipeSocket.call(servers)
-	wipeSocket.call(users)
+	var servers = map.call(_getServers())
+	var users = map.call(_getUsers())
 
 	var data = { 
 		event: 'userlist',
 		data: {
-			users: users, 
 			servers: servers 
 		} 
 	}
@@ -113,7 +106,7 @@ function _sendConnections(socket) {
 	socket.write(JSON.stringify(data))
 }
 
-function _userDrop(socket) {
+function _userDrop(type, socket) {
 	var iterate = function(list) {
 		this.forEach(obj => {
 			list.splice(list.indexOf(obj), 1)
@@ -125,5 +118,6 @@ function _userDrop(socket) {
 	obj = _getServers().filter((server) => { if (server.alias == socket.alias) return server })
 	iterate.call(obj, _getServers())
 
+	dsApp.log.error('['+type+'] Instance '+socket.alias+' dropped')
 	//_broadcastEvent(socket, 'leave')
 }

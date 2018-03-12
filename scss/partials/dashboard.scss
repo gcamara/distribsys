@@ -6,6 +6,7 @@ $menu-width: 300px;
 	box-shadow: -4px 0px 8px 7px #444;
 	height: 100vh;
 	position: fixed;
+	z-index: 99999;
 
 	.perfil {
 		display: flex;
@@ -17,7 +18,8 @@ $menu-width: 300px;
 
 		.logo {
 			text-align: left !important;
-			display: inline-block;
+			display: flex;
+			align-items: center;
 		}
 
 		.infos {
@@ -30,47 +32,91 @@ $menu-width: 300px;
 		}
 	}
 
+	@extend %list-props;
 	ul {
-		$bgHover: #25808e;
-		list-style-type: none;
-		background: black;
 		font-size: 10pt;
-		padding-left: 0px;
-		li {
-			padding: 10px;
-			&:hover {
-				background: $bgHover;
-				cursor: pointer;
-			}
+		i {
+			font-size: 10pt;
+		}
+		li ul {	display: none;	}
+	} 
+}
+
+.sub-menu {
+	top: 0;
+	z-index: -1;
+	left: 300px;
+	position: absolute;
+	width: 0px;
+	height: 100vh;
+	overflow-y: auto;
+	transition: width .3s ease-in, z-index .3s ease-out;
+	background: #f6f6f6;
+	box-shadow: 1px 0px 10px rgba(0,0,0,.5);
+
+	&.display {
+		width: 300px;
+		z-index: 9999;
+		color: #5958a0;
+		@extend %list-props;
+		overflow-x: hidden;
+		ul li { 
+			width: 290px;
+			display: table;
 			i {
-				font-size: 10pt !important;
+				width: 10pt;
+			    padding-right: 10pt;
+			    display: table-cell;
+			    vertical-align: middle;
+				text-align: center;
+			}
+			&:hover {
+				color: white !important;
 			}
 
-			&:last-child {
-				position: absolute;
-				bottom: 0;
-				padding: 0;
-				width: 100%;
 
-				button {
-					border: none;
-					width: 100%;
-					cursor: pointer;
-					color: white;
-					background: black;
-					outline: none;
-					height: 40px;
-
-					&:hover {
-						background: $bgHover;
-					}
-				}
-			}
 		}
 	}
 }
 
+
 .content {
 	display: inline-block;
 	margin-left: $menu-width;
+	padding: 10px;
+	font-size: 10pt;
+	font-family: Tahoma;
+
+	div.info { 
+		color: cadetblue
+	}
+
+	div.error {
+		color: #bc1b1b;
+	}
+}
+
+%list-props {
+	ul {
+		list-style-type: none;
+		margin: 0;
+		padding: 0;
+		text-align: left;
+
+		li {
+			padding-left: 10px;
+			height: 40px;
+			line-height: 40px;
+			transition: border-left .1s ease-in;
+
+			&:hover, &.selected {
+				background: rgba(0,0,0,.5);
+				cursor: pointer;
+			}
+
+			&.selected {
+				border-left: 5px #3a0f77 solid
+			}
+		}
+	}
 }

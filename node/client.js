@@ -1,5 +1,6 @@
 var net = require('net')
 var serverPort
+var clients = []
 
 module.exports = function(serverPortConfig) {
 	var module = {}
@@ -33,11 +34,17 @@ function _connectToServer(ip, port) {
 		})
 
 		client.on('error', (err) => { 
-			console.log('There has been and error')
-			console.log(err) 
+			dsApp.log.error('There has been an error')
+			dsApp.socketModule.userDrop('Client', client)
+			dsApp.removeInstance(client.alias, client.remoteAddress, client.remotePort)
 		})
 	}
+
 	return client
+}
+
+function _getClientInfo() {
+	return JSON.stringify({ event: 'clientinfo', ip: 'localhost', port: serverPort, alias: dsApp.instanceAlias})
 }
 
 function _processEvent(data, client) {
@@ -47,25 +54,19 @@ function _processEvent(data, client) {
 	// Message received after connecting to a given server
 	if (content.event == 'server-info') {
 		var server = data
+		client.alias = data.alias
 		server.socket = client
-		server.socket.alias = data.alias
-		var ports = _getServers().filter(m => { if (m.port === server.port) return m })
-
-		if (!ports.length) {
-			_getServers().push(server)
-			var info = { event: 'join', ip: 'localhost', port: serverPort, alias: dsApp.instanceAlias}
-			client.write(JSON.stringify(info))
-		}
-	} else if (content.events == 'accepted') {
+		_getServers().push(server)
+		client.write(_getClientInfo())
+	} else if (content.event == 'accepted') {
 		// Ask for user list
 		client.write(JSON.stringify({event: 'userlist'})) 
 	} else if (content.event == 'userlist') {
 		dsApp.users = _getUsers().concat(data.users)
 		data.servers.forEach(server => {
 			// Map servers port in order to discover if there's some server with that given port
-			var socket = _connectToServer(server.ip, server.port)
-			socket.alias = server.alias
-			server.socket = socket
+			if (server)
+				var socket = _connectToServer(server.ip, server.port)
 		})
 	}
 }

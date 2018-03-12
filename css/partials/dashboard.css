@@ -5,6 +5,7 @@
   box-shadow: -4px 0px 8px 7px #444;
   height: 100vh;
   position: fixed;
+  z-index: 99999;
 }
 .menu .perfil {
   display: flex;
@@ -16,7 +17,8 @@
 }
 .menu .perfil .logo {
   text-align: left !important;
-  display: inline-block;
+  display: flex;
+  align-items: center;
 }
 .menu .perfil .infos {
   display: inline-block;
@@ -27,43 +29,80 @@
   margin-left: 10px;
 }
 .menu ul {
-  list-style-type: none;
-  background: black;
   font-size: 10pt;
-  padding-left: 0px;
 }
-.menu ul li {
-  padding: 10px;
+.menu ul i {
+  font-size: 10pt;
 }
-.menu ul li:hover {
-  background: #25808e;
-  cursor: pointer;
+.menu ul li ul {
+  display: none;
 }
-.menu ul li i {
-  font-size: 10pt !important;
-}
-.menu ul li:last-child {
+
+.sub-menu {
+  top: 0;
+  z-index: -1;
+  left: 300px;
   position: absolute;
-  bottom: 0;
-  padding: 0;
-  width: 100%;
+  width: 0px;
+  height: 100vh;
+  overflow-y: auto;
+  transition: width .3s ease-in, z-index .3s ease-out;
+  background: #f6f6f6;
+  box-shadow: 1px 0px 10px rgba(0, 0, 0, 0.5);
 }
-.menu ul li:last-child button {
-  border: none;
-  width: 100%;
-  cursor: pointer;
-  color: white;
-  background: black;
-  outline: none;
-  height: 40px;
+.sub-menu.display {
+  width: 300px;
+  z-index: 9999;
+  color: #5958a0;
+  overflow-x: hidden;
 }
-.menu ul li:last-child button:hover {
-  background: #25808e;
+.sub-menu.display ul li {
+  width: 290px;
+  display: table;
+}
+.sub-menu.display ul li i {
+  width: 10pt;
+  padding-right: 10pt;
+  display: table-cell;
+  vertical-align: middle;
+  text-align: center;
+}
+.sub-menu.display ul li:hover {
+  color: white !important;
 }
 
 .content {
   display: inline-block;
   margin-left: 300px;
+  padding: 10px;
+  font-size: 10pt;
+  font-family: Tahoma;
+}
+.content div.info {
+  color: cadetblue;
+}
+.content div.error {
+  color: #bc1b1b;
+}
+
+.menu ul, .sub-menu.display ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  text-align: left;
+}
+.menu ul li, .sub-menu.display ul li {
+  padding-left: 10px;
+  height: 40px;
+  line-height: 40px;
+  transition: border-left .1s ease-in;
+}
+.menu ul li:hover, .sub-menu.display ul li:hover, .menu ul li.selected, .sub-menu.display ul li.selected {
+  background: rgba(0, 0, 0, 0.5);
+  cursor: pointer;
+}
+.menu ul li.selected, .sub-menu.display ul li.selected {
+  border-left: 5px #3a0f77 solid;
 }
 
 /*# sourceMappingURL=dashboard.css.map */

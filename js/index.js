@@ -14,6 +14,7 @@ var dsApp = {
 	dsApp.showInfo = showInfo
 	dsApp.showWarn = showWarn
 	dsApp.addInstance = _addInstance
+	dsApp.log = new Log()
 
 	btn = $('#teste')
 	port = $('#port')
@@ -52,8 +53,9 @@ var dsApp = {
 	})
 
 	function _addInstance(alias, ip, port) {
-		var el = $('<div> ALIAS '+alias+' / IP '+ip+' / PORT: '+port+'</div>')
-		$('.content').append(el)
+		console.log('Adding instance')
+		var el = $('<li id="ip_'+alias+'_'+port+'"><i class="material-icons">computer</i> '+alias+' ('+ ip + ':' + port +')</li>')
+		$('ul.sub-menus.instances').append(el)
 	}
 
 	function addNotification(msg, type) {
@@ -73,5 +75,53 @@ var dsApp = {
 
 	function showWarn(msg) {
 		addNotification(msg, 'warn')
+	}
+
+	function Log(text, event) {
+		var self = this;
+		self.text = (text, event, opts) => {
+			text = formatDate() + " - " + text
+			var element = $('<div class="'+event+'">'+text+'</div>')
+			if (opts) {
+				if (opts.style) {
+					if (opts.style.lastIndexOf(';') == opts.style.length-1)
+						opts.style = opts.style.substring(0, opts.style.length-1)
+					var split = opts.style.split(';')
+					for (var style in split) {
+						var splitStyle = split[style].split(':')
+						var key = splitStyle[0].trim()
+						var value = splitStyle[1].trim()
+						element.css(key, value)
+					}
+				}
+			}
+			
+			$('.content').append(element)
+			$('.content').scrollTop($('.content').prop('scrollHeight'))
+		}
+		self.info = (text, opts) => { self.text(text, 'info', opts) }
+		self.warn = (text, opts) => { self.text(text, 'warn', opts) }
+		self.error = (text, opts) => { self.text(text, 'error', opts) }
+		self.message = (text, opts) => { self.text(text, 'message', opts) }
+		self.addLink = (link, opts) => { $('.content').append('<a href="#" style="text-decoration: none">'+link+'</a></br>') }
+
+		return self
+	}
+
+		function formatDate() {
+		Number.prototype.padLeft = function(base,chr) {
+		    var  len = (String(base || 10).length - String(this).length)+1;
+		    return len > 0? new Array(len).join(chr || '0')+this : this;
+		}
+
+		var d = new Date
+    	var dformat = [d.getDate().padLeft(),
+    		   (d.getMonth()+1).padLeft(),
+               d.getFullYear()].join('/') +' ' +
+              [d.getHours().padLeft(),
+               d.getMinutes().padLeft(),
+               d.getSeconds().padLeft()].join(':')
+
+       return "["+dformat+"]"
 	}
 })()
