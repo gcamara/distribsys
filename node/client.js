@@ -63,7 +63,8 @@ function _processEvent(data, client) {
 		client.write(_getClientInfo())
 	} else if (content.event == 'accepted') {
 		// Ask for user list
-		client.write(JSON.stringify({event: 'userlist'})) 
+		// Try EvilScan instead
+		// client.write(JSON.stringify({event: 'userlist'})) 
 	} else if (content.event == 'userlist') {
 		dsApp.users = _getUsers().concat(data.users)
 		data.servers.forEach(server => {

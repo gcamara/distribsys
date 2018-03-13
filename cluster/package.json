@@ -1,0 +1,19 @@
+{
+  "name": "cluster_api",
+  "version": "1.0.0",
+  "description": "Cluster Service",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "cluster"
+  ],
+  "author": "Gabriel Camara Carvalho",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.16.3",
+    "stringify": "^5.2.0"
+  }
+}

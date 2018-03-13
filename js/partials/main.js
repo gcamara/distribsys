@@ -2,6 +2,7 @@
 	var server = dsApp.socketModule.getServer()
 	dsApp.log.info('System running on '+server.address().address+':'+server.address().port+' ('+dsApp.instanceAlias+')')
 	dsApp.removeInstance = _removeInstance
+
 	var commandCache = []
 	var commandIndex = 0
 	var tabIndex = 0
@@ -56,21 +57,45 @@
 		$('ul.sub-menus.instances').find('#ip_'+alias+'_'+port).remove()
 	}
 
+	function scanNetwork() {
+		console.log('Scanning')
+		var ip
+		require('dns').lookup(require('os').hostname(), function (err, add, fam) {
+  			dsApp.log.info('Local IP Address: '+add)
+  			ip = add
+  			var opts = {
+				target: ip.substring(0, ip.lastIndexOf('.')-1)+'0',
+				port: '1024-3000',
+				status: 'TROU',
+				banner: true
+			}
+
+			var scanner = new dsApp.scanner(opts)
+			scanner.on('result', data => {
+				if (data.status == 'open') {
+					if (data.port != dsApp.myPort) {
+						dsApp.log.info('Found connection at '+data.ip+':'+data.port)
+						dsApp.client.connectToServer(data.ip, data.port)
+					}
+				}
+			})
+			scanner.on('error', err => {
+				dsApp.log.error('Error '+err)
+			})
+			scanner.on('done', () => {
+				dsApp.log.info('Network scan done')
+			})
+
+			scanner.run()
+		})
+	}
+
 	$(document).ready(function() {
 		$('#server-ip').text(server.address().address)
 		$('#server-port').text(server.address().port)
 		$('#server-alias').text(dsApp.instanceAlias)
 
-		$('#connectInstance').on('click', function() {
-			var self = $(this)
-			var port = $('#external-port').val()
-
-			dsApp.client.connectToServer('localhost', port)
-		})
-
-		$('#showServers').on('click', function() {
-			dsApp.socketModule.showServers()
-		})
+		scanNetwork()
 
 		$('#command').on('keydown', function(event) {
 			// Enter Key Event

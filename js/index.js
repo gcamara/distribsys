@@ -5,7 +5,8 @@ var dsApp = {
 	clModule: require('./node/client'),
 	wsModule: require('./node/webserver'),
 	servers: [],
-	users: []
+	users: [],
+	scanner: require('evilscan')
 }
 ;(function() {
 

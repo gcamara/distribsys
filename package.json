@@ -19,5 +19,8 @@
   "homepage": "https://github.com/gcamara/distribSys#readme",
   "devDependencies": {
     "electron": "^1.8.3"
+  },
+  "dependencies": {
+    "evilscan": "^1.6.1"
   }
 }
