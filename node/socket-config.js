@@ -7,6 +7,7 @@ module.exports = function() {
 	server = net.createServer(_configureServer)
 
 	module.broadcastEvent = _broadcastEvent
+	module.broadcastMessage = _broadcastMessage
 	module.configureServer = _configureServer
 	module.sendConnections = _sendConnections
 	module.userDrop = _userDrop
@@ -54,7 +55,12 @@ function _broadcastEvent(socket, data) {
 function _configureServer(socket) {
 	socket.write(_getServerInfo())
 	
-	socket.on('data', function(data) { _processEvent(socket, JSON.parse(data))	})
+	socket.on('data', function(data) {
+		dsApp.log.info('['+socket.alias+' ('+socket.address().address+':'+socket.address().port+')]: '+data)
+		try {
+			_processEvent(socket, JSON.parse(data))	
+		} catch (e) {}
+	})
 	socket.on('error', function() { _userDrop('Server', socket)	})
 }
 

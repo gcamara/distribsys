@@ -4,6 +4,52 @@
 	dsApp.removeInstance = _removeInstance
 	var commandCache = []
 	var commandIndex = 0
+	var tabIndex = 0
+	var commands = {
+		connect: {
+			description: 'Connect to a given address',
+			params: {
+				'a': {
+					required: true,
+					alias: 'ip_address'
+				},
+				'p': {
+					required: true,
+					alias: 'port'
+				}
+			}
+		},
+		send: {
+			description: 'Send message a given address or specify ALL in &lt;-a&gt; param. It has autocomplete by pressing TAB Key or Shift+Tab Key',
+			params: {
+				'a': {
+					required: true,
+					alias: 'ip_address'
+				},
+				'p': {
+					required: true,
+					alias: 'port'
+				},
+				'message': {
+					required: false
+				}
+			}
+		},
+		disconnect: {
+			description: 'Disconnect all connections (Servers and Users)',
+		},
+		clear: {
+			description: 'Clear the log'
+		},
+		help: {
+			description: 'Display help content',
+			params: {
+				'command': {
+					required: false
+				}
+			}
+		},
+	}
 
 	function _removeInstance(alias, ip, port) {
 		console.log('remove ')
@@ -27,12 +73,13 @@
 		})
 
 		$('#command').on('keydown', function(event) {
-			console.log(event.keyCode)
+			// Enter Key Event
 			if (event.keyCode == 13) {
 				processCommand($(this).val())
 				$(this).val('/')
 			}
 			else {
+				// Arrow Up and Down event
 				if (event.keyCode == 38 || event.keyCode == 40) {
 					event.preventDefault()
 					var command;
@@ -49,6 +96,23 @@
 					if (command)
 						$(this).val('/'+command)
 				}
+
+				// Tab Event
+				if (event.keyCode == 9) {
+					event.preventDefault()
+					var cmd = $(this).val();
+					var user
+					if (cmd.startsWith('/send')) {
+						if (event.shiftKey && tabIndex > 0)
+							tabIndex -= 1
+						else if (tabIndex < dsApp.servers.length - 1)
+							tabIndex += 1
+						if ((user = dsApp.servers[tabIndex]))
+							$(this).val('/send -a '+user.ip+' -p '+user.port+' ')
+					} else {
+
+					}
+				}
 			}
 		})
 		$('#command').on('focus', function() {
@@ -57,7 +121,6 @@
 		})
 
 		function processCommand(command) {
-			console.log('called')
 			if (command.startsWith('/')) {
 				command = command.substring(1, command.length)
 				var params = command.split(" ")
@@ -84,16 +147,18 @@
 				else if (command === 'help') {
 					if (params.length <= 1) {
 						dsApp.log.warn('The following commands are allowed: ')
-						dsApp.log.warn('/connect -a &lt;ip&gt; -p &lt;port&gt;  --- To connect to a given address')
-						dsApp.log.warn('/kick -a &lt;ip&gt; -p &lt;port&gt; --- To kick some server instance')
-						dsApp.log.warn('/clear --- To clear the log')
-						dsApp.log.warn('/nmap --- To map network')
-						dsApp.log.warn('/help [command]')
+						showCommands()
 					}
 				}
 				else if (command === 'clear') {
 					$('.content').html('')
 				}
+				else if (command === 'send')
+					sendMessage(params)
+				else if (command === 'disconnect') {
+					location.reload()
+				}
+				
 
 				else {
 					dsApp.log.error('Invalid command /'+command)
@@ -106,6 +171,49 @@
 			if ((index = params.indexOf(param)) > -1)
 				return params[index + 1]
 			return null
+		}
+
+		function sendMessage(params) {
+			var address
+			var port
+			if ((address = findParameter(params, '-a')) && (port = findParameter(params, '-p'))) {
+				var server = dsApp.servers.filter(server => { return server.ip == address && server.port == port })
+				if (server) {
+					var msg = Array.from(params, (v, k) => { if (k > 4) return v }).filter(n => { return n != undefined }).join(' ')
+					server[0].socket.write(msg)
+					dsApp.log.info('[Local]: '+msg)
+				} else {
+					dsApp.log.error('No connection found with given parameters')
+				}
+			} else {
+				if (address.toLowerCase() == 'all') {
+					var msg = Array.from(params, (v, k) => { if (k > 2) return v }).filter(n => { return n != undefined }).join(' ')
+					dsApp.socketModule.broadcastMessage(dsApp.socketModule.getServer(), 'message', msg)
+				}
+				else
+					dsApp.log.warn('Missing parameters -a or -p')
+			}
+		}
+
+		function showCommands() {
+			Object.keys(commands).forEach(command => {
+				var cmdObj = commands[command]
+				var cmdStr = "/"+command
+				if (cmdObj.params) {
+					Object.keys(cmdObj.params).forEach(param => {
+						paramObj = cmdObj.params[param]
+						if (paramObj.alias) {
+							cmdStr += ' -'+param
+							if (paramObj.required)
+								cmdStr += ' &lt;'+paramObj.alias+'&gt;'
+						} else if (!paramObj.required)
+								cmdStr += ' ['+param+']'
+
+						})
+				}
+				cmdStr += ' --- '+cmdObj.description
+				dsApp.log.warn(cmdStr)
+			})
 		}
 	})
 })()

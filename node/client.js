@@ -25,7 +25,7 @@ function _connectToServer(ip, port) {
 		})
 
 		client.on('data', function(data) {
-			console.log('Client Received: '+data+' \n')
+			dsApp.log.info('['+client.alias+' ('+ip+':'+port+')]: '+data)
 			_processEvent(data, client)
 		})
 

@@ -240,8 +240,8 @@
   font-size: 10pt;
   font-family: Tahoma;
   width: calc(100% - 300px);
-  height: calc(98vh - 30px);
-  max-height: calc(98vh - 30px);
+  height: calc(97vh - 30px);
+  max-height: calc(97vh - 30px);
   overflow: auto;
   position: fixed;
   background: #191919;
