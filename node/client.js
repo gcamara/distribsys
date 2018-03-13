@@ -36,7 +36,10 @@ function _connectToServer(ip, port) {
 		})
 
 		client.on('error', (err) => { 
-			dsApp.log.error('There has been an error')
+			if (err.code == 'ECONNREFUSED')
+				dsApp.log.error('Connection has been refused for given address and port')
+			else
+				dsApp.log.error('An unexpected error occurred and the connection was closed')
 		})
 	}
 
