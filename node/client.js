@@ -16,7 +16,7 @@ function _getServers() { return dsApp.servers }
 
 /* Client Side */
 function _connectToServer(ip, port) {
-	var ports = _getServers().filter(m => { if (m.port === port) return m })
+	var ports = _getServers().filter(m => { if (m.port === port && m.ip === ip) return m })
 	var client = net.Socket()
 	if (!ports.length) {
 		client.connect(port, ip, function() {
@@ -30,13 +30,13 @@ function _connectToServer(ip, port) {
 		})
 
 		client.on('close', (err) => { 
+			dsApp.socketModule.userDrop('Client', client)
+			dsApp.removeInstance(client.alias, client.remoteAddress, client.remotePort)
 			console.log('Client connection ended') 
 		})
 
 		client.on('error', (err) => { 
 			dsApp.log.error('There has been an error')
-			dsApp.socketModule.userDrop('Client', client)
-			dsApp.removeInstance(client.alias, client.remoteAddress, client.remotePort)
 		})
 	}
 

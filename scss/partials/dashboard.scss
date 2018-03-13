@@ -3,7 +3,7 @@ $menu-width: 300px;
 	width: $menu-width;
 	background: #161616;
 	color: white;
-	box-shadow: -4px 0px 8px 7px #444;
+	box-shadow: -4px 0px 8px 7px #0a0a0a;
 	height: 100vh;
 	position: fixed;
 	z-index: 99999;
@@ -86,13 +86,41 @@ $menu-width: 300px;
 	padding: 10px;
 	font-size: 10pt;
 	font-family: Tahoma;
+	width: calc(100% - #{$menu-width});
+	height: calc(98vh - 30px);
+	max-height: calc(98vh - 30px);
+	overflow: auto;
+	position: fixed;
+	background: #191919;
+
 
 	div.info { 
-		color: cadetblue
+		color: white;
 	}
 
 	div.error {
 		color: #bc1b1b;
+	}
+
+	div.warn {
+		color: orange;
+	}
+}
+
+.cmd-line {
+	width: calc(100% - #{$menu-width});
+	position: fixed;
+	bottom: 0;
+	left: $menu-width;
+
+	input {
+		background: black;
+		color: white;
+		border: none;
+		outline: none;
+		width: 100%;
+		padding: 10px;
+		font-size: 10pt;
 	}
 }
 

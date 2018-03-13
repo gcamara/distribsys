@@ -2,7 +2,7 @@
   width: 300px;
   background: #161616;
   color: white;
-  box-shadow: -4px 0px 8px 7px #444;
+  box-shadow: -4px 0px 8px 7px #0a0a0a;
   height: 100vh;
   position: fixed;
   z-index: 99999;
@@ -77,12 +77,37 @@
   padding: 10px;
   font-size: 10pt;
   font-family: Tahoma;
+  width: calc(100% - 300px);
+  height: calc(98vh - 30px);
+  max-height: calc(98vh - 30px);
+  overflow: auto;
+  position: fixed;
+  background: #191919;
 }
 .content div.info {
-  color: cadetblue;
+  color: white;
 }
 .content div.error {
   color: #bc1b1b;
+}
+.content div.warn {
+  color: orange;
+}
+
+.cmd-line {
+  width: calc(100% - 300px);
+  position: fixed;
+  bottom: 0;
+  left: 300px;
+}
+.cmd-line input {
+  background: black;
+  color: white;
+  border: none;
+  outline: none;
+  width: 100%;
+  padding: 10px;
+  font-size: 10pt;
 }
 
 .menu ul, .sub-menu.display ul {

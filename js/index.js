@@ -80,7 +80,7 @@ var dsApp = {
 	function Log(text, event) {
 		var self = this;
 		self.text = (text, event, opts) => {
-			text = formatDate() + " - " + text
+			text = formatDate() + ' - ' + event.toUpperCase() + ' - ' + text
 			var element = $('<div class="'+event+'">'+text+'</div>')
 			if (opts) {
 				if (opts.style) {
