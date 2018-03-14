@@ -16,6 +16,7 @@ var dsApp = {
 	dsApp.showWarn = showWarn
 	dsApp.addInstance = _addInstance
 	dsApp.log = new Log()
+	dsApp.network = require('./node/network')()
 
 	btn = $('#teste')
 	port = $('#port')
@@ -24,8 +25,8 @@ var dsApp = {
 	btn.on('click', function() {
 	    dsApp.myPort = port.val()
 	    dsApp.instanceAlias = instanceAlias.val()
-	    if (!dsApp.myPort) {
-	    	showError('Port number can\'t be empty and must be a number.')
+	    if (!dsApp.myPort || (dsApp.myPort && (dsApp.myPort < 9000 || dsApp.myPort > 9005))) {
+	    	showError('Port number can\'t be empty and must be a number between 3000 and 3005.')
 	    	return
 	    }
 
@@ -36,7 +37,7 @@ var dsApp = {
 	    try {
 	    	dsApp.myPort = parseInt(dsApp.myPort)
 		    dsApp.client = dsApp.clModule(dsApp.myPort)
-		    dsApp.socketModule.getServer().listen(dsApp.myPort, 'localhost')
+		    dsApp.socketModule.getServer().listen(dsApp.myPort, dsApp.network.getIp())
 		    $('body').fadeOut('slow', function() { 
 		    	$('body').load('partials/dashboard.html', function() {
 		    		$('body').fadeIn(800)
@@ -54,9 +55,11 @@ var dsApp = {
 	})
 
 	function _addInstance(alias, ip, port) {
-		console.log('Adding instance')
-		var el = $('<li id="ip_'+alias+'_'+port+'"><i class="material-icons">computer</i> '+alias+' ('+ ip + ':' + port +')</li>')
-		$('ul.sub-menus.instances').append(el)
+		if (alias) {
+			console.log('Adding instance '+alias)
+			var el = $('<li id="ip_'+alias+'_'+port+'"><i class="material-icons">computer</i> '+alias+' ('+ ip + ':' + port +')</li>')
+			$('ul.sub-menus.instances').append(el)
+		}
 	}
 
 	function addNotification(msg, type) {
