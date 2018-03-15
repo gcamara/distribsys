@@ -1,5 +1,13 @@
 var address
-module.exports = () => {
+var portRange = {
+	from: 9000,
+	to: 9005
+}
+var totalIpTested = 0
+module.exports = (ports) => {
+	if (ports)
+		portRange = ports
+
 	_getIp()
 	return {
 		scanNetwork: _scanNetwork,
@@ -9,7 +17,7 @@ module.exports = () => {
 }
 
 function _scanNetwork() {
-	console.log('Scanning')
+	dsApp.log.warn('Scanning over network '+module.exports().getIp()+'/'+calculateSubnet())
 	var ip
 	_getIp(function (err, add, fam) {
 			dsApp.log.info('Local IP Address: '+add)
@@ -27,6 +35,7 @@ function _scanNetwork() {
 
 		var scanner = new dsApp.scanner(opts)
 		scanner.on('result', data => {
+			totalIpTested += 1
 			if (data.status == 'open') {
 				if (data.port != dsApp.myPort) {
 					dsApp.log.info('Found connection at '+data.ip+':'+data.port)
@@ -39,6 +48,8 @@ function _scanNetwork() {
 		})
 		scanner.on('done', () => {
 			dsApp.log.info('Network scan done')
+			dsApp.log.warn('Total of '+totalIpTested+' tests over network')
+			totalIpTested = 0
 		})
 
 		scanner.run()
@@ -46,7 +57,6 @@ function _scanNetwork() {
 }
 
 function _getIp(callback) {
-	console.log('getIp')
 	var dns = require('dns')
 	var hostname = require('os').hostname()
 	if (callback)
@@ -57,7 +67,8 @@ function _getIp(callback) {
 
 function calculateSubnet() {
 	var os = require('os')
-	var interface = os.networkInterfaces().Ethernet.filter((interface => interface.family == 'IPv4'))
+	var ethernet = os.networkInterfaces().Ethernet || os.networkInterfaces().en0
+	var interface = ethernet.filter((interface => interface.family == 'IPv4'))
 	var netmask = interface[0].netmask
 
 	var split = netmask.split('.')

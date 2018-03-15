@@ -76,8 +76,6 @@ function _processEvent(socket, data) {
 			dsApp.client.connectToServer(data.ip, data.port)
 
 			socket.write(JSON.stringify({event: 'accepted'}))
-			//TODO add server instance under the menu 'servers'
-			dsApp.addInstance(data.alias, data.ip, data.port)
 		} else {
 			_getUsers().push({ socket: socket })
 		}
@@ -87,7 +85,7 @@ function _processEvent(socket, data) {
 }
 
 function _getServerInfo() {
-	return JSON.stringify({ event: 'server-info', data: { alias: dsApp.instanceAlias, ip: 'localhost', port: dsApp.myPort } })
+	return JSON.stringify({ event: 'server-info', data: { alias: dsApp.instanceAlias, ip: dsApp.network.getIp(), port: dsApp.myPort } })
 }
 
 function _sendConnections(socket) {

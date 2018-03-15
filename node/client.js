@@ -7,6 +7,7 @@ module.exports = function(serverPortConfig) {
 	serverPort = serverPortConfig
 
 	module.connectToServer = _connectToServer
+	module.mapConnection = _mapConnection
 
 	return module
 }
@@ -14,14 +15,18 @@ module.exports = function(serverPortConfig) {
 function _getUsers() { return dsApp.users }
 function _getServers() { return dsApp.servers }
 
+function _mapConnection(ip, port) {
+	return _getServers().filter(m => { if (m.port === port && m.ip === ip) return m })
+}
+
 /* Client Side */
-function _connectToServer(ip, port) {
-	var ports = _getServers().filter(m => { if (m.port === port && m.ip === ip) return m })
+function _connectToServer(ip, port, callback) {
 	var client = net.Socket()
-	if (!ports.length) {
+	if (!_mapConnection(ip, port).length) {
 		client.connect(port, ip, function() {
 			console.log('Connected as client on ' + client.remoteAddress+':'+client.remotePort)
 			client.setKeepAlive(true)
+			callback && callback()
 		})
 
 		client.on('data', function(data) {
@@ -47,7 +52,7 @@ function _connectToServer(ip, port) {
 }
 
 function _getClientInfo() {
-	return JSON.stringify({ event: 'clientinfo', ip: 'localhost', port: serverPort, alias: dsApp.instanceAlias})
+	return JSON.stringify({ event: 'clientinfo', ip: dsApp.network.getIp(), port: serverPort, alias: dsApp.instanceAlias})
 }
 
 function _processEvent(data, client) {
@@ -59,11 +64,15 @@ function _processEvent(data, client) {
 		var server = data
 		client.alias = data.alias
 		server.socket = client
-		_getServers().push(server)
-		client.write(_getClientInfo())
+		if (!_mapConnection().length) {
+			_getServers().push(server)
+			client.write(_getClientInfo())
+			dsApp.addInstance(data.alias, data.ip, data.port)
+		}
 	} else if (content.event == 'accepted') {
 		// Ask for user list
 		// Try EvilScan instead
+		// Tried evilscan only, took too much to find all instances
 		// client.write(JSON.stringify({event: 'userlist'})) 
 	} else if (content.event == 'userlist') {
 		dsApp.users = _getUsers().concat(data.users)

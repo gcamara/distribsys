@@ -6,7 +6,11 @@ var dsApp = {
 	wsModule: require('./node/webserver'),
 	servers: [],
 	users: [],
-	scanner: require('evilscan')
+	scanner: require('evilscan'),
+	portRange: {
+		from: 9000,
+		to: 9005
+	}
 }
 ;(function() {
 
@@ -25,8 +29,8 @@ var dsApp = {
 	btn.on('click', function() {
 	    dsApp.myPort = port.val()
 	    dsApp.instanceAlias = instanceAlias.val()
-	    if (!dsApp.myPort || (dsApp.myPort && (dsApp.myPort < 9000 || dsApp.myPort > 9005))) {
-	    	showError('Port number can\'t be empty and must be a number between 3000 and 3005.')
+	    if (!dsApp.myPort || (dsApp.myPort && (dsApp.myPort < dsApp.portRange.from || dsApp.myPort > dsApp.portRange.to))) {
+	    	showError('Port number can\'t be empty and must be a number between '+dsApp.portRange.from+' and '+dsApp.portRange.to+'.')
 	    	return
 	    }
 
