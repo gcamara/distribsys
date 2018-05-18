@@ -67,9 +67,25 @@ function _getIp(callback) {
 
 function calculateSubnet() {
 	var os = require('os')
-	var ethernet = os.networkInterfaces().Ethernet || os.networkInterfaces().en0
-	var interface = ethernet.filter((interface => interface.family == 'IPv4'))
-	var netmask = interface[0].netmask
+	var interfaces = os.networkInterfaces();
+	var keys = Object.keys(interfaces)
+	var ethernet
+	var interface
+
+	for (var i = 0; i < keys.length; i++) {
+		var int = interfaces[keys[i]]
+		if (int) {
+			Object.values(int).filter(inter => {
+				if (inter.address != "127.0.0.1" && inter.family == "IPv4") {
+					interface = inter
+				}
+			})
+			if (interface) break;
+		}
+	}
+	
+	//var interface = ethernet.filter((interface => interface.family == 'IPv4'))
+	var netmask = interface.netmask
 
 	var split = netmask.split('.')
 	var subnetCidr = 0
